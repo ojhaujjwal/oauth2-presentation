@@ -41,7 +41,7 @@
         </section>
         <section>
             <h2>
-                <a href="http://ujjwalojha.com" target="_blank">Ujjwal Ojha</a>
+                <a href="http://twitter.com/ojhaujjjwal" target="_blank">Ujjwal Ojha</a>
             </h2>
         </section>
         <section>
@@ -78,6 +78,9 @@
                         />
                 contributor
             </h2>
+        </section>
+        <section>
+            <h2>OAuth 2 Authorization Framework</h2>
         </section>
         <section>
             <h3>
@@ -137,7 +140,7 @@
         </section>
         <section>
             <h3>Abstract Flow</h3>
-            <img src="img/abstract_flow.png" alt="Abstract Flow">
+            <img height="550" src="img/abstract_flow.png" alt="Abstract Flow">
         </section>
         <section>
             <h3>Token Endpoint</h3>
@@ -319,6 +322,23 @@ username=USERNAME&password=PASSWORD&client_id=CLIENT_ID</code>
         </section>
         <section>
             <section>
+                <h3>Custom grants</h3>
+                <p>You can create your own custom grants for your own needs.</p>
+            </section>
+            <section>
+                <h3>Step 1: Implement your custom grant</h3>
+                <p>Using your favourite language or platform, implement custom grant on the authorization server</p>
+            </section>
+            <section>
+                <h3>Step 2: Consume the custom grant</h3>
+               <pre>
+                    <code>https://oauth.example.com/token?grant_type=CUSTOM_GRANT
+&scope=read&key1=value1&key2=value2</code>
+                </pre>
+            </section>
+        </section>
+        <section>
+            <section>
                 <h3>Accessing resources</h3>
                 <p class="fragment">So you have an access token. Now what?</p>
                <pre class="fragment">
@@ -406,8 +426,6 @@ https://api.example.com/me
     Reveal.initialize({
         controls: true,
         progress: true,
-        // Display the page number of the current slide
-        slideNumber: true,
         history: true,
         center: true,
         theme: Reveal.getQueryHash().theme || 'sky', // available themes are in /css/theme
