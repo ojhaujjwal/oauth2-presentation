@@ -1,0 +1,6 @@
+{
+    "name": "the-proxy-pattern-in-php",
+    "dependencies": {
+        "reveal.js": "2.6.*"
+    }
+}

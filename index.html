@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8" />
+    <title>OAuth2 Authorization Framework</title>
+    <meta name="description" content="An Introduction to OAuth 2" />
+    <meta name="author" content="Ujjwal Ojha" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="bower_components/reveal.js/css/reveal.min.css">
+    <link rel="stylesheet" href="bower_components/reveal.js/css/theme/default.css" id="theme">
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="bower_components/reveal.js/lib/css/zenburn.css" id="highlight-theme">
+    <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+    <script>
+        document.write( '<link rel="stylesheet" href="bower_components/reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
+    <style type="text/css">
+        .reveal section img {
+            border: 0;
+            background: none;
+            box-shadow: 0 0 #000;
+        }
+        .reveal pre {
+            width: 100%;
+            font-size: 0.68em;
+        }
+        .reveal pre code {
+            max-height: 600px;
+        }
+    </style>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <section>
+            <h1>
+                Hello!
+            </h1>
+        </section>
+        <section>
+            <h2>
+                <a href="http://ujjwalojha.com" target="_blank">Ujjwal Ojha</a>
+            </h2>
+        </section>
+        <section>
+            <h2>
+                <img
+                        src="img/gh.svg"
+                        alt="Me on Github"
+                        height="70px"
+                        style="margin: 0;"
+                        />
+                <img
+                        src="img/twitter.svg"
+                        alt="Me on Twitter"
+                        height="70px"
+                        style="margin: 0;"
+                        />
+                <a href="http://twitter.com/ojhaujjjwal" target="_blank">ojhaujjjwal</a>
+            </h2>
+        </section>
+        <section>
+            <img
+                    src="img/hrevert-logo.png"
+                    alt="Me on Github"
+                    style="margin: 0;"
+                    />
+        </section>
+        <section>
+            <h2>
+                <img
+                        src="img/zf-logo.svg"
+                        alt="Zend Framework 2"
+                        width="150px"
+                        style="margin: -8px;"
+                        />
+                contributor
+            </h2>
+        </section>
+        <section>
+            <h3>
+                Before OAuth
+            </h3>
+            You would have to provide your username and password to third-party.
+        </section>
+        <section>
+            <h3>
+                Problems
+            </h3>
+            <ul>
+                <li class="fragment">Apps store the user's passwords</li>
+                <li class="fragment">Apps get complete access to user's account</li>
+                <li class="fragment">Users cant revoke access to the app except by changing password</li>
+                <li class="fragment">Compromised apps expose user's password</li>
+            </ul>
+        </section>
+        <section>
+            <h3>
+                Before OAuth 1
+            </h3>
+            <ul>
+                <li class="fragment">Password authentication was used</li>
+                <li class="fragment">Many services implemented things similiar to OAuth 1</li>
+                <li class="fragment">Each implementation was different</li>
+            </ul>
+        </section>
+        <section>
+            <h3>
+                Then comes OAuth 1
+            </h3>
+            <ul>
+                <li class="fragment">OAuth 1 standardized how different services implemented authorization</li>
+                <li class="fragment">But there were some limitations</li>
+            </ul>
+        </section>
+        <section>
+            <h3>
+                OAuth 2 Introduction
+            </h3>
+            <ul>
+                <li class="fragment">Open standard to authorization</li>
+                <li class="fragment">Specifies how resource owners authorizes third-party access to their server resources</li>
+            </ul>
+        </section>
+        <section>
+            <h3>
+                Terminologies
+            </h3>
+            <ul>
+                <li class="fragment"><b>Resource Owner:</b> The User</li>
+                <li class="fragment"><b>Resource Server:</b> The API</li>
+                <li class="fragment"><b>Client:</b> The third party application</li>
+                <li class="fragment"><b>Authorization Server:</b> The server authorizing the client app to access the resources of the resource owner</li>
+            </ul>
+        </section>
+        <section>
+            <h3>Abstract Flow</h3>
+            <img src="img/abstract_flow.png" alt="Abstract Flow">
+        </section>
+        <section>
+            <h3>Token Endpoint</h3>
+            <p>Path on authorization server which is used by the client to obtain an access token.</p>
+        </section>
+        <section>
+            <h3>Authorization grant</h3>
+            <p>A well defined set of steps to obtain access token from an authorization server</p>
+            <ul>
+                <li class="fragment">Authorisation code grant</li>
+                <li class="fragment">Implicit grant</li>
+                <li class="fragment">Password Grant</li>
+                <li class="fragment">Client credentials grant</li>
+                <li class="fragment">Refresh token grant</li>
+            </ul>
+        </section>
+        <section>
+            <section>
+                <h3>Authorisation code grant</h3>
+                <p class="fragment">Useful in traditional web apps</p>
+                <img class="fragment" height="500" src="img/auth_code_flow.png" alt="Authorisation code flow">
+            </section>
+            <section>
+                <h3>Step 1: Authorization Code Link</h3>
+                <pre>
+                    <code>https://oauth2server.com/oauth?response_type=code&client_id=CLIENT_ID
+&redirect_uri=REDIRECT_URI&scope=photos</code>
+                </pre>
+            </section>
+            <section>
+                <h3>Step 2: User Authorizes Application</h3>
+                <img src="img/oauth-authorization-prompt.png" alt="Authorization Prompt">
+            </section>
+            <section>
+                <h3>Step 3: Application Receives Authorization Code</h3>
+                <pre><code>https://my-app.com/callback?code=AUTHORIZATION_CODE</code></pre>
+            </section>
+            <section>
+                <h3>Step 4: Application Requests Access Token</h3>
+                <pre>
+                    <code>https://oauth2server.com/oauth/token?client_id=CLIENT_ID&
+client_secret=CLIENT_SECRET&grant_type=authorization_code&
+code=AUTHORIZATION_CODE&redirect_uri=CALLBACK_URL</code>
+                </pre>
+            </section>
+            <section>
+                <h3>Step 5: Application Receives Access Token</h3>
+                <pre>
+                    <code>
+{
+    "access_token": "ACCESS_TOKEN",
+    "token_type": "bearer",
+    "expires_in": 2592000,
+    "refresh_token": "REFRESH_TOKEN"
+}
+                    </code>
+                </pre>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h3>Implicit grant</h3>
+                <p class="fragment">Useful in browser-based and mobile apps</p>
+                <img class="fragment" src="img/implicit_flow.png" height="500" alt="Implicit grant flow">
+            </section>
+            <section>
+                <h3>Step 1: Authorization Link</h3>
+                <pre>
+                    <code>https://oauth.example.com/authorize?response_type=token
+&client_id=CLIENT_ID&redirect_uri=CALLBACK_URL&scope=read</code>
+                </pre>
+            </section>
+            <section>
+                <h3>Step 2: User Authorizes Application</h3>
+                <img src="img/oauth-authorization-prompt.png" alt="Authorization Prompt">
+            </section>
+            <section>
+                <h3>Step 3: User-agent Receives Access Token with Redirect URI</h3>
+                <pre>
+                    <code>https://my-app.com.com/callback#token=ACCESS_TOKEN</code>
+                </pre>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h3>Password grant</h3>
+                <p class="fragment">Useful for your website or your mobile app</p>
+                <ul class="fragment">
+                    <li>Client sends username and password</li>
+                    <li>Authorization Server sends access token back</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Step 1: Client sends request to Authorization server</h3>
+                <pre>
+                    <code>https://oauth.example.com/token?grant_type=password&
+username=USERNAME&password=PASSWORD&client_id=CLIENT_ID</code>
+                </pre>
+            </section>
+            <section>
+                <h3>Step 2: Client Receives Access Token</h3>
+                <pre>
+                    <code>
+{
+    "access_token": "ACCESS_TOKEN",
+    "token_type": "bearer",
+    "expires_in": 2592000,
+    "refresh_token": "REFRESH_TOKEN"
+}
+                    </code>
+                </pre>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h3>Client credentials grant</h3>
+                <p class="fragment">Useful if applications can access resources on their own</p>
+                <ul class="fragment">
+                    <li>Client sends client id and client secret</li>
+                    <li>Authorization Server sends access token back</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Step 1: Client sends request to Authorization server</h3>
+                <pre>
+                    <code>https://oauth.example.com/token?grant_type=client_credentials
+&client_id=CLIENT_ID&client_secret=CLIENT_SECRET</code>
+                </pre>
+            </section>
+            <section>
+                <h3>Step 2: Client Receives Access Token</h3>
+                <pre>
+                    <code>
+{
+    "access_token": "ACCESS_TOKEN",
+    "token_type": "bearer",
+    "expires_in": 2592000,
+    "refresh_token": "REFRESH_TOKEN"
+}
+                    </code>
+                </pre>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h3>Refresh token grant</h3>
+                <ul>
+                    <li>Client sends refresh token</li>
+                    <li>Authorization Server sends access token back</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Step 1: Client sends request to Authorization server</h3>
+                <pre>
+                    <code>https://oauth.example.com/token?grant_type=refresh_token
+&refresh_token=REFRESH_TOKEN</code>
+                </pre>
+            </section>
+            <section>
+                <h3>Step 2: Client Receives Access Token</h3>
+                <pre>
+                    <code>
+{
+    "access_token": "ACCESS_TOKEN",
+    "token_type": "bearer",
+    "expires_in": 2592000
+}
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h3>Why Refresh Tokens?</h3>
+                <ul>
+                    <li>Because access token are short lived</li>
+                    <li>It is not viable to execute other grants every time access token expires</li>
+                </ul>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h3>Accessing resources</h3>
+                <p class="fragment">So you have an access token. Now what?</p>
+               <pre class="fragment">
+                    <code>
+curl -H "Authorization: Bearer RsT5OjbzRn430zqMLgV3Ia" \
+https://api.example.com/me
+                    </code>
+                </pre>
+            </section>
+        </section>
+        <section>
+            <h3>Security Recommendations</h3>
+            <ul>
+                <li>Always use https</li>
+                <li>Issue short lived bearer tokens</li>
+                <li>Don't pass bearer token in page URLs</li>
+            </ul>
+        </section>
+        <section>
+            <section>
+                <h3>Scope</h3>
+                <p>Limiting access to resources</p>
+            </section>
+            <section>
+               <pre>
+                    <code>https://oauth.example.com/token?grant_type=GRANT_TYPE&scope=SCOPES</code>
+                </pre>
+            </section>
+            <section>
+                <h3>Scopes in authorization grant and implicit grant</h3>
+                <p>Scopes are listed in the page where the resources owner authorizes the client</p>
+                <img src="img/facebook-authorize-scoped.png" alt="Facebook Authorization Prompt">
+            </section>
+        </section>
+        <section>
+            <h3>Implementing on OAuth 2 Server</h3>
+            <ul>
+                <li>Read the spec very carefully</li>
+                <li>Find a server library already written. A short list is available on <a href="http://oauth.net/2/">http://oauth.net/2/</a></li>
+            </ul>
+        </section>
+        <section>
+            <h3>OAuth2 Client Libraries</h3>
+            <ul>
+                <li class="fragment">
+                    PHP
+                    <ul>
+                        <li><a target="_blank" href="https://packagist.org/packages/league/oauth2-client">league/oauth2-client</a></li>
+                        <li><a target="_blank" href="https://packagist.org/packages/lusitanian/oauth">lusitanian/oauth</a></li>
+                    </ul>
+                </li>
+                <li class="fragment">
+                    Node.js
+                    <ul>
+                        <li><a target="_blank" href="https://www.npmjs.com/package/simple-oauth2">simple-oauth2</a></li>
+                        <li><a target="_blank" href="https://www.npmjs.com/package/oauth">oauth</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <p class="fragment">A list of client libraries is available on <a href="http://oauth.net/2/">http://oauth.net/2/</a></p>
+        </section>
+        <section>
+            <h2>Thank you!</h2>
+            <p>
+                <a href="https://github.com/ojhaujjwal">
+                    <img
+                            src="img/gh.svg"
+                            alt="Me on Github"
+                            height="40px"
+                            style="margin: 0;"
+                            />
+                </a>
+                <a href="https://github.com/ojhaujjwal/oauth2-presentation" target="_blank">ojhaujjwal/oauth2-presentation</a>
+            </p>
+        </section>
+    </div>
+</div>
+
+<script src="bower_components/reveal.js/lib/js/head.min.js"></script>
+<script src="bower_components/reveal.js/js/reveal.min.js"></script>
+<script>
+    // Configure Reveal
+    // Full list of configuration options available here:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        // Display the page number of the current slide
+        slideNumber: true,
+        history: true,
+        center: true,
+        theme: Reveal.getQueryHash().theme || 'sky', // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+            { src: 'bower_components/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+            { src: 'bower_components/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+            { src: 'bower_components/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+            { src: 'bower_components/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+            { src: 'bower_components/reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+            { src: 'bower_components/reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+            // { src: 'plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
+            //{ src: 'bower_components/reveal.js/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+            { src: 'js/loadhtmlslides.js', condition: function() { return !!document.querySelector( '[data-html]' ); } }
+        ]
+    });
+</script>
+
+</body>
+</html>
