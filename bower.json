@@ -1,6 +1,0 @@
-{
-    "name": "oauth2-presentation",
-    "dependencies": {
-        "reveal.js": "2.6.*"
-    }
-}
